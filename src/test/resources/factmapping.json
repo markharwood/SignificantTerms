@@ -1,0 +1,13 @@
+{ 
+    "fact": {
+        "properties": {
+            "FactId":	            { "type": "string", "index": "not_analyzed" },
+            "RoutingId":            { "type": "string", "index": "not_analyzed" },
+            "Description":          { "type": "string", "index": "analyzed" }
+        },
+   		"_routing" : {
+            "required" : true,
+            "path" : "RoutingId"
+        }        
+    }
+}
