@@ -1,6 +1,12 @@
 package com.elasticsearch.facet.significantterms;
 
-
+/**
+ * Settings for the analysis. Mostly sensible defaults.
+ * TODO Some of the thresholds e.g minPercentUsesInLargerPhrase could be
+ * relabelled something more user-friendly e.g. phraseMergeAggressiveness.
+ * @author Mark
+ *
+ */
 public class SignificantTermAnalysisSettings {
     public static final String ANALYZE_FIELD_NAME_TAG = "analyzeField";
     public static final String DUP_LENGTH = "duplicateParagraphWordLength";

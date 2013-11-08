@@ -1,14 +1,12 @@
-package com.inperspective.topterms;
+package com.elasticsearch.facet.significantterms;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
 /**
- * This code is the intellectual property of Mark Harwood - the algorithms are
- * those featured in the "TopTermFinder" related classes found in
- * inperspective.jar. This is granted under a non-exclusive license to Detica
- * for redistribution in binary form and comes with absolutely no warranties.
+ * Holds a run of significant terms.
+ * TODO rationalize use of this object an {@link SignificantPhraseStats}
  */
 public class PhraseStats {
     //TODO replace slow (cos Vector-backed) stack with a Deque

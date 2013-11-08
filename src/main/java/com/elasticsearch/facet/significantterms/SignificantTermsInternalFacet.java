@@ -20,9 +20,6 @@ import org.elasticsearch.common.xcontent.XContentBuilderString;
 import org.elasticsearch.search.facet.Facet;
 import org.elasticsearch.search.facet.InternalFacet;
 
-import com.inperspective.topterms.PhraseStats;
-import com.inperspective.topterms.TermStats;
-
 /**
  *
  */
@@ -242,6 +239,20 @@ public class SignificantTermsInternalFacet extends InternalFacet implements Sign
 
     // shorter runs are subsumed into longer, more popular runs using the same
     // words (because they are likely more meaningful)
+    //
+    // TODO !!!!
+    // It feels like there is a general purpose optimizer for merging objects that are known
+    // to be subsets of each other based on signal strengths eg. the work I did on detecting which
+    // ngrams in URLs were most subject to takedown notices. NGrams like "Ware" and "Warez" are 
+    //known to have a containment relationship and different scores/frequencies.The score is a measure
+    // of relevance (e.g. % of uses in websites names subject to takedown vs no takedowns) and frequency 
+    //is the number of hits (e.g. number of relevant sites).
+    //An optimization algo merges sets of candidate entities (phrases or ngrams) based on user 
+    //preferences for precision vs recall and tunes into the entities that are the sweet spot. 
+    // Larger entities e.g. long phrases are generally more precise but reduce recall as they are much
+    // more specific. This collapsing/optimization process feels like a possibly generic algorithm capable
+    // of operating on different entity types that exhibit containment hierarchies e.g geohashes, ngrams, 
+    // phrases, saved query hierarchies etc).
     private void consolidateWordRuns(Map<Stack<String>, Integer> returnPhraseStats) {
         Set<Stack<String>> subsumedRuns = new HashSet<Stack<String>>();
         for (Entry<Stack<String>, Integer> thisPhrase : returnPhraseStats.entrySet()) {
@@ -260,22 +271,13 @@ public class SignificantTermsInternalFacet extends InternalFacet implements Sign
                 if (subsumedRuns.contains(otherWordRun)) {
                     continue;
                 }
-                if (subsumeIntoLargerPhraseThreshold >= otherPopularity) // this
-                                                                         // phrase
-                                                                         // is
-                                                                         // more
-                                                                         // popular
-                                                                         // than
-                                                                         // the
-                                                                         // other
-                                                                         // one
+                if (subsumeIntoLargerPhraseThreshold >= otherPopularity) 
                 {
-                    if (thisWordRun.size() > otherWordRun.size()) // this phrase
-                                                                  // also has
-                                                                  // more words
-                                                                  // than the
-                                                                  // other one
+                    // this phrase is more popular than the other one
+                    
+                    if (thisWordRun.size() > otherWordRun.size()) 
                     {
+                        // this phrase also has more words than the other one
                         if (thisWordRun.containsAll(otherWordRun)) {
                             // All the words in the shorter run are embodied in
                             // the longer one (e.g. "united states of america"

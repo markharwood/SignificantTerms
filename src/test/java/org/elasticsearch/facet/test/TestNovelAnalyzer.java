@@ -1,4 +1,4 @@
-package com.detica.elasticsearch.facet.test;
+package org.elasticsearch.facet.test;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -16,14 +16,12 @@ import org.apache.lucene.util.Version;
 import org.junit.Before;
 import org.junit.Test;
 
-
+//TODO write proper tests
 public class TestNovelAnalyzer {
 
     @Test
     public void testNovelAnalyzer() throws IOException {
         NovelAnalyzer na = new NovelAnalyzer(new WhitespaceAnalyzer(Version.LUCENE_44), 4);
-        // System.out.println(IOUtils.toString(TestNovelAnalyzer.class
-        // .getResourceAsStream("/near-dups.txt")));
         for (int i = 1; i < 4; i++) {
             TokenStream ts = na.tokenStream("text",
                     new InputStreamReader(TestNovelAnalyzer.class.getResourceAsStream("/near-dups" + i + ".txt")));

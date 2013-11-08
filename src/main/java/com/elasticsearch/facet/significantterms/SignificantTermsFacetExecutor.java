@@ -37,9 +37,6 @@ import org.elasticsearch.search.internal.ContextIndexSearcher;
 import org.elasticsearch.search.internal.SearchContext;
 import org.elasticsearch.search.lookup.SourceLookup;
 
-import com.inperspective.topterms.PhraseStats;
-import com.inperspective.topterms.TermStats;
-
 public class SignificantTermsFacetExecutor extends FacetExecutor {
     private SignificantTermAnalysisSettings settings;
     public Collection<TermStats> insufficientLocalEvidenceTerms;
@@ -72,10 +69,6 @@ public class SignificantTermsFacetExecutor extends FacetExecutor {
 
         @Override
         public void postCollection() {
-            // For debug readability purposes don't allow sysout statements to
-            // intermingle....
-            // synchronized (TopTermsFacetExecutor.class)
-            // {
             boolean sourceRequested = false;
             SignificantTermStats shardLocalConfirmedTopTerms = new SignificantTermStats(settings.numTopTermsToReturn);
             // Faster to use HashMap while gathering tokens then sort later
@@ -160,15 +153,6 @@ public class SignificantTermsFacetExecutor extends FacetExecutor {
                         stream = analyzer.tokenStream(fieldName, new FastStringReader(value));
                         stream.reset();
                         CharTermAttribute term = stream.addAttribute(CharTermAttribute.class);
-                        // TODO could retain some indication of terms and their
-                        // neighbours here if we use the position info....
-                        // PositionIncrementAttribute posIncr =
-                        // stream.addAttribute(PositionIncrementAttribute.class);
-                        // OffsetAttribute offset =
-                        // stream.addAttribute(OffsetAttribute.class);
-                        // TypeAttribute type =
-                        // stream.addAttribute(TypeAttribute.class);
-                        // int position = 0;
                         while (stream.incrementToken()) {
                             String t = term.toString();
                             thisDocsUniqueTokens.add(t);
@@ -231,7 +215,7 @@ public class SignificantTermsFacetExecutor extends FacetExecutor {
                 confirmedShardLocalTerms.add(shardLocalConfirmedTopTerms.pop());
             }
             SignificantPhraseStats topPhrases = new SignificantPhraseStats(settings.numTopPhrasesToReturn);
-            // ==========Analyze top term usage ======================
+            // ==========Analyze top term usage in phrases ======================
             Collection<PhraseStats> returnedTopPhrases = new ArrayList<PhraseStats>();
             synchronized (SignificantTermsFacetExecutor.class) {
                 if (analyzer instanceof NovelAnalyzer) {

@@ -1,4 +1,4 @@
-package com.detica.elasticsearch.facet.test;
+package org.elasticsearch.facet.test;
 
 import static org.elasticsearch.node.NodeBuilder.nodeBuilder;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -32,11 +32,14 @@ import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.facet.Facets;
 import org.junit.Assert;
 
+import com.elasticsearch.facet.significantterms.PhraseStats;
 import com.elasticsearch.facet.significantterms.SignificantTermsFacet;
 import com.elasticsearch.facet.significantterms.SignificantTermsFacetBuilder;
-import com.inperspective.topterms.PhraseStats;
-import com.inperspective.topterms.TermStats;
+import com.elasticsearch.facet.significantterms.TermStats;
 
+
+//TODO add test statements - need to finish tuning plugin defaults before
+// recording expected outputs in a test
 public class TestSignificantTermsFacet {
 
     private static final String FACT_DOC_TYPE = "fact";
@@ -54,7 +57,6 @@ public class TestSignificantTermsFacet {
         //Run tests
         runQueries(client);
         
-//        Thread.sleep(50000);
         System.out.println("Closing...");
         
         
