@@ -3,10 +3,8 @@ package com.elasticsearch.facet.significantterms;
 import java.io.IOException;
 
 import org.elasticsearch.common.xcontent.XContentBuilder;
-import org.elasticsearch.index.mapper.internal.AllFieldMapper;
 import org.elasticsearch.search.builder.SearchSourceBuilderException;
 import org.elasticsearch.search.facet.FacetBuilder;
-import org.elasticsearch.search.facet.terms.TermsFacet;
 
 public class SignificantTermsFacetBuilder extends FacetBuilder {
 
