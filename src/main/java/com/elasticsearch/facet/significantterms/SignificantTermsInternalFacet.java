@@ -72,7 +72,6 @@ public class SignificantTermsInternalFacet extends InternalFacet implements Sign
     public Facet reduce(ReduceContext context)
     // 0.90.2 public Facet reduce(List<Facet> facets)
     {
-        String debugTerm="gascoigne";
         List<Facet> facets = context.facets();
         Map<String, TermStats> returnTermStats = null;
         Map<Stack<String>, Integer> returnPhraseStats = null;
@@ -99,10 +98,6 @@ public class SignificantTermsInternalFacet extends InternalFacet implements Sign
                 // First shard, so initialize with its contents
                 returnTermStats = new HashMap<String, TermStats>();
                 for (TermStats termStat : shardStats.confirmedShardLocalTerms) {
-                    if(termStat.term.equals(debugTerm))
-                    {
-                        System.out.println("Debug Jam "+termStat.shardDf);
-                    }
                     termStat.totalSampleNumDocs = shardStats.sampleNumDocs;
                     termStat.totalCorpusNumDocs = shardStats.shardNumDocs;
                     returnTermStats.put(termStat.term, termStat);
@@ -110,10 +105,6 @@ public class SignificantTermsInternalFacet extends InternalFacet implements Sign
                 for (TermStats termStat : shardStats.insufficientLocalEvidenceTerms) {
                     termStat.totalSampleNumDocs = shardStats.sampleNumDocs;
                     termStat.totalCorpusNumDocs = shardStats.shardNumDocs;
-                    if(termStat.term.equals(debugTerm))
-                    {
-                        System.out.println("Debug Jam "+termStat.shardDf);
-                    }
                     returnTermStats.put(termStat.term, termStat);
                 }                
             } else {
@@ -122,17 +113,8 @@ public class SignificantTermsInternalFacet extends InternalFacet implements Sign
                     if (other == null) {
                         termStat.totalSampleNumDocs = shardStats.sampleNumDocs;
                         termStat.totalCorpusNumDocs = shardStats.shardNumDocs;
-                        if(termStat.term.equals(debugTerm))
-                        {
-                            System.out.println("Debug Jam "+termStat.shardDf);
-                        }                        
                         returnTermStats.put(termStat.term, termStat);
                     } else {
-                        if(termStat.term.equals(debugTerm))
-                        {
-                            System.out.println("Debug Jam "+termStat.shardDf);
-                        }                        
-                        
                         other.merge(termStat, shardStats.sampleNumDocs, shardStats.shardNumDocs);
                     }
                 }
@@ -141,16 +123,8 @@ public class SignificantTermsInternalFacet extends InternalFacet implements Sign
                     if (other == null) {
                         termStat.totalSampleNumDocs = shardStats.sampleNumDocs;
                         termStat.totalCorpusNumDocs = shardStats.shardNumDocs;
-                        if(termStat.term.equals(debugTerm))
-                        {
-                            System.out.println("Debug Jam "+termStat.shardDf);
-                        }                        
                         returnTermStats.put(termStat.term, termStat);
                     } else {
-                        if(termStat.term.equals(debugTerm))
-                        {
-                            System.out.println("Debug Jam "+termStat.shardDf);
-                        }                        
                         other.merge(termStat, shardStats.sampleNumDocs, shardStats.shardNumDocs);
                     }
                 }
@@ -167,10 +141,6 @@ public class SignificantTermsInternalFacet extends InternalFacet implements Sign
        
         SignificantTermStats scoreReducedTopTerms = new SignificantTermStats(settings.numTopTermsToReturn);
         for (TermStats termStat : returnTermStats.values()) {
-            if(termStat.term.equals(debugTerm))
-            {
-                System.out.println("Debug Jam "+termStat.shardDf);
-            }            
             termStat.calculateFinalScore();
             if(termStat.score>0){                
                 scoreReducedTopTerms.insertWithOverflow(termStat);
